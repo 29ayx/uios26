@@ -1,6 +1,13 @@
 @import "tailwindcss";
 
 :root {
+  /* Dark theme by default */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* Light theme override */
+[data-theme='light'] {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -12,15 +19,115 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Glassmorphism utility */
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.15); /* default (dark theme) glass fill */
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 0.5px solid rgba(255, 255, 255, 0.7); /* razor-thin bright edge */
+  border-radius: 0.75rem; /* matches Tailwind rounded-lg */
+  overflow: hidden;
+  /* inner + outer shadow for depth */
+  box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.25),
+              0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+/* Light theme – use darker tint behind glass for contrast on bright background */
+[data-theme='light'] .glass {
+  background: rgba(0, 0, 0, 0.10); /* lighter tint */
+  backdrop-filter: blur(22px) saturate(160%);
+  -webkit-backdrop-filter: blur(22px) saturate(160%);
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.25),
+              0 6px 20px rgba(0, 0, 0, 0.15);
+  color: #000000; /* pure black text */
+}
+
+/* ensure all descendants inherit the white text in light mode */
+[data-theme='light'] .glass *,
+[data-theme='light'] body {
+  color: inherit;
+}
+
+/* colored light bleeding around edges */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px; /* edge width */
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255,255,255,0.8) 0%, rgba(99,102,241,0.35) 50%, rgba(14,165,233,0.35) 100%);
+  /* create border by masking internal area */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Tap/Click interactive shine effect */
+.interactable {
+  position: relative;
+  transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactable:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 4px;
+}
+
+/* Active (tap) state: white glow & gentle scale */
+.interactable:active {
+  transform: scale(1.06);
+  box-shadow: 0 0 40px rgba(255, 255, 255, 0.9),
+              inset 0 0 12px rgba(255, 255, 255, 0.6),
+              0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.interactable::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.interactable:active::after {
+  opacity: 1;
+}
+
+/* Custom glass cursor base */
+.cursor-glass {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+
+  /* Glass look */
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4), 0 0 30px rgba(0, 0, 0, 0.15);
+
+  /* Stronger magnification effect */
+  backdrop-filter: blur(2px) saturate(240%) contrast(140%) brightness(135%);
+  -webkit-backdrop-filter: blur(2px) saturate(240%) contrast(140%) brightness(135%);
+}
+
+[data-theme='light'] pre,
+[data-theme='light'] code {
+  color: #2d3748 !important; /* Tailwind gray-800 */
 }
