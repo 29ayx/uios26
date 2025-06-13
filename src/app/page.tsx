@@ -89,6 +89,37 @@ export default function Home() {
 </nav>`}
         </pre>
       </section>
+
+      {/* Global CSS Snippet */}
+      <section id="css" className="w-full max-w-2xl flex flex-col gap-4">
+        <h2 className="text-2xl font-semibold text-gray-700">globals.css</h2>
+        <p className="text-sm text-gray-700">
+          Copy and paste the following styles into <code>src/app/globals.css</code> (or your
+          project's global stylesheet):
+        </p>
+        <pre className="text-xs text-gray-800 bg-black/[.05] dark:bg-white/[.06] p-4 rounded overflow-auto">
+{`/* Glass base */
++.glass {
+  position: relative;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(20px) saturate(180%);
+  border: 0.5px solid rgba(255,255,255,0.7);
+  border-radius: 0.75rem;
+  overflow: hidden;
++}
++
++/* Light-mode override */
++[data-theme='light'] .glass {
++  background: rgba(0,0,0,0.10);
++  color: #000;
++}
++
++/* Tap/Click shine animation */
++.interactable { transition: transform 250ms, box-shadow 250ms; }
++.interactable:active { transform: scale(1.06); box-shadow:0 0 40px rgba(255,255,255,.9); }
++`}
+        </pre>
+      </section>
     </main>
   );
 }
