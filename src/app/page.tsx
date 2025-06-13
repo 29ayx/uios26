@@ -14,7 +14,7 @@ export default function Home() {
         <div className="rounded-full bg-gradient-to-br from-sky-400/40 via-green-300/30 to-purple-300 w-[500px] h-[500px] bottom-48 left-1/2 -translate-x-1/2 absolute blur-3xl opacity-50"></div>
       </div>
 
-      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">UI OS 26</h1>
+      <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">iOS UI Tailwind Glassmorphism</h1>
       <ThemeToggle />
 
       {/* Button Section */}
